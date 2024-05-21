@@ -1,0 +1,52 @@
+#include <iostream>
+#include <string>
+using namespace std;
+class Movil {
+protected:
+    string marca;
+    string modelo;
+    string sistemaOperativo;
+public:
+    Movil(const string& _marca, const string& _modelo, const string& _sistemaOperativo) 
+    : marca(_marca), modelo(_modelo), sistemaOperativo(_sistemaOperativo) {
+    cout << "Llamada del constructor de la clase base Movil\n" << endl;
+    }
+    ~Movil() {
+        cout << "Llamada del destructor de la clase base Movil\n" << endl;
+    }
+    void mostrarInfo() {
+        cout << "Marca: " << marca << endl;
+        cout << "Modelo: " << modelo << endl;
+        cout << "Sistema Operativo: " << sistemaOperativo << endl;
+    }
+};
+class Telefono : public Movil {
+public:
+    Telefono(const string& _marca, const string& _modelo, const string& _sistemaOperativo) 
+    : Movil(_marca, _modelo, _sistemaOperativo) {
+        cout << "Llamada del constructor de la clase derivada Telefono\n" << endl;
+    }
+    ~Telefono() {
+        cout << "Llamada del destructor de la clase derivada Telefono\n" << endl;
+    }
+};
+class Tablet : public Movil {
+    public:
+    Tablet(const string& _marca, const string& _modelo, const string& _sistemaOperativo) 
+    : Movil(_marca, _modelo, _sistemaOperativo) {
+        cout << "Llamada del constructor de la clase derivada Tablet\n" << endl;
+    }
+    ~Tablet() {
+        cout << "Llamada del destructor de la clase derivada Tablet\n" << endl;
+    }
+};
+int main() {
+    Telefono telefono("Iphone", "11 pro", "iOS");
+    cout << endl;
+    telefono.mostrarInfo();
+    cout << endl;
+    Tablet tablet("Samsung", "Galaxy 7", "Android");
+    cout << endl;
+    tablet.mostrarInfo();
+    return 0;
+}
