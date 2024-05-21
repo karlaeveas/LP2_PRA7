@@ -1,0 +1,60 @@
+#include <iostream>
+#include <string>
+using namespace std;
+class Persona {
+protected:
+    string correo;
+public:
+    string nombre;
+    int edad;
+    double salario;
+    void setCorreo(const string& correo) {
+        this->correo = correo;
+    }
+    string getCorreo() const {
+        return correo;
+    }
+    void mostrarInfo() const {
+        cout << "Nombre: " << nombre << endl;
+        cout << "Edad: " << edad << endl;
+        cout << "Salario: " << salario << endl;
+        cout << "Correo: " << correo << endl;
+    }
+};
+class Empleado : public Persona {
+public:
+    void mostrarInfo() const {
+        cout << "Empleado:" << endl;
+        Persona::mostrarInfo();
+    }
+};
+class Cliente : public Persona {
+public:
+    void mostrarInfo() const {
+        cout << "Cliente:" << endl;
+        Persona::mostrarInfo();
+    }
+};
+int main() {
+    Persona persona1;
+    persona1.nombre = "Julia";
+    persona1.edad = 25;
+    persona1.salario = 2810.0;
+    persona1.setCorreo("juliapaz.1@example.com");
+    Empleado empleado1;
+    empleado1.nombre = "Paolo";
+    empleado1.edad = 46;
+    empleado1.salario = 8900.0;
+    empleado1.setCorreo("paolonunes1@example.com");
+    Cliente cliente1;
+    cliente1.nombre = "Aracely";
+    cliente1.edad = 28;
+    cliente1.salario = 5620.0;
+    cliente1.setCorreo("aracelyyy1@example.com");
+    persona1.mostrarInfo();
+    cout << endl;
+    empleado1.mostrarInfo();
+    cout << endl;
+    cliente1.mostrarInfo();
+    return 0;
+}
