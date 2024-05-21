@@ -1,0 +1,80 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class Vehiculo {
+protected:
+    string marca;
+    double precio;
+
+public:
+    Vehiculo(string marca, double precio) :
+        marca(marca), precio(precio) {}
+
+    string getMarca() const { return marca; }
+    double getPrecio() const { return precio; }
+};
+
+
+class Automovil : public Vehiculo {
+private:
+    int numPuertas;
+    string tipoCombustible;
+
+public:
+    Automovil(string marca, double precio, int numPuertas, string tipoCombustible) :
+        Vehiculo(marca, precio), numPuertas(numPuertas), tipoCombustible(tipoCombustible) {}
+
+    int getNumPuertas() const { return numPuertas; }
+    string getTipoCombustible() const { return tipoCombustible; }
+};
+
+
+class Motocicleta : public Vehiculo {
+private:
+    int cilindrada;
+
+public:
+    Motocicleta(string marca, double precio, int cilindrada) :
+        Vehiculo(marca, precio), cilindrada(cilindrada) {}
+
+    int getCilindrada() const { return cilindrada; }
+};
+
+int main() {
+    string marca, tipoCombustible;
+    int numPuertas, cilindrada;
+    double precio;
+
+    cout << "Ingrese la marca del automóvil: ";
+    getline(cin, marca);
+    cout << "Ingrese el precio del automóvil: ";
+    cin >> precio;
+    cout << "Ingrese el número de puertas del automóvil: ";
+    cin >> numPuertas;
+    cout << "Ingrese el tipo de combustible del automóvil: ";
+    cin.ignore(); // Limpiar el buffer de entrada
+    getline(cin, tipoCombustible);
+    Automovil auto1(marca, precio, numPuertas, tipoCombustible);
+
+    cout << "\nIngrese la marca de la motocicleta: ";
+    getline(cin, marca);
+    cout << "Ingrese el precio de la motocicleta: ";
+    cin >> precio;
+    cout << "Ingrese la cilindrada de la motocicleta: ";
+    cin >> cilindrada;
+    Motocicleta moto1(marca, precio, cilindrada);
+
+    cout << "\nAutomóvil:" << endl;
+    cout << "Marca: " << auto1.getMarca() << endl;
+    cout << "Número de puertas: " << auto1.getNumPuertas() << endl;
+    cout << "Tipo de combustible: " << auto1.getTipoCombustible() << endl;
+    cout << endl;
+
+    cout << "Motocicleta:" << endl;
+    cout << "Marca: " << moto1.getMarca() << endl;
+    cout << "Cilindrada: " << moto1.getCilindrada() << endl;
+
+    return 0;
+}
