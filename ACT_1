@@ -1,0 +1,193 @@
+#include <iostream>
+#include <string>
+#include <conio.h>
+#define ENTER 13 //representar las teclas
+#define BACKSPACE 8
+using namespace std;
+
+
+class Cliente {
+protected:
+    string nombre;
+    int dni;
+    int numeroCuenta;
+    string usuario;
+    string contrasena;
+public:
+    Cliente (const string& nombre, const int & dni, 
+    const int&numeroCuenta, const string& usuario, const string& contrasena) 
+    : nombre (nombre), dni (dni), numeroCuenta (numeroCuenta), usuario (usuario), contrasena (contrasena) {}
+    string getNombre() const {
+        return nombre;
+    }
+    int getDni () const {
+        return dni;
+    }
+    int getNumeroCuenta() const {
+        return numeroCuenta;
+    }
+    string getUsuario() const {
+        return usuario;
+    }
+    string getContrasena () const {
+        return contrasena;
+    }
+};
+
+
+class ClienteSeguro_Public : public Cliente {
+public:
+    ClienteSeguro_Public (const string& nombre, const int & dni, 
+    const int & numeroCuenta, const string& usuario, const string& contrasena) 
+    : Cliente (nombre, dni, numeroCuenta, usuario, contrasena) {}
+    ~ClienteSeguro_Public() {
+        cout << "MEMORIA LIBERADA" << endl;
+    }
+    string encriptarInformacion (const string& contrasena) {
+        string encriptada = contrasena;
+        const int desplazamiento = 5; // Desplazamiento fijo para la encriptación
+        for (char& c : encriptada) {
+            if (isalpha(c)) { // Solo se aplica encriptación a los caracteres alfabéticos
+                if (isupper(c)) {
+                    c = 'A' + (c - 'A' + desplazamiento) % 26; //Encriptar letra mayúscula
+                }
+                else {
+                    c = 'a' + (c - 'a' + desplazamiento) % 26; //Encriptar letra minúscula
+                }
+            }
+        }
+        return encriptada;
+    }
+    bool verificarAutenticidad() const {
+        return true; 
+    }
+};
+class ClienteSeguro_Protected: protected Cliente {
+    public:
+    ClienteSeguro_Protected (const string& nombre, const int & dni, 
+    const int& numeroCuenta, const string& usuario, const string& contrasena) 
+    : Cliente (nombre, dni, numeroCuenta, usuario, contrasena) {}
+    ~ClienteSeguro_Protected() {
+        cout << "MEMORIA LIBERADA" << endl;
+    }
+    string getNombre() const {
+        return Cliente::getNombre(); //referencia al miembro protegido de la clase base
+    }
+    int getDni() const {
+        return Cliente::getDni();
+    }
+    int getNumeroCuenta() const {
+        return Cliente::getNumeroCuenta();
+    }
+    string getUsuario() const {
+        return Cliente::getUsuario();
+    }
+    string getContrasena() const {
+        return Cliente::getContrasena();
+    }
+    string encriptarInformacion(const string& contrasena) {
+        string encriptada = contrasena;
+        const int desplazamiento = 5; // Desplazamiento fijo para la encriptación
+        for (char& c : encriptada) {
+            if (isalpha(c)) { // Solo se aplica encriptación a los caracteres alfabéticos
+                if (isupper(c)) {
+                    c = 'A' + (c - 'A' + desplazamiento) % 26; //Encriptar letra mayúscula
+                }
+                else {
+                    c = 'a' + (c - 'a' + desplazamiento) % 26; //Encriptar letra minúscula
+                }
+            }
+        }
+        return encriptada;
+    }
+    bool verificarAutenticidad() const { // Lógica de verificación de autenticidad aquí
+        return true; // Ejemplo: siempre retorna true
+    }
+};
+
+
+class ClienteSeguro_Private : private Cliente { //miembros ya están directamente accesibles dentro de la clase derivada
+public:
+    ClienteSeguro_Private(const string& nombre, const int& dni, const int& numeroCuenta,const string& usuario, const string& contrasena) : Cliente(nombre, dni, numeroCuenta, usuario, contrasena) {}
+    using Cliente::getNombre; // Acceso protegido a través de la clase derivada
+    using Cliente::getDni;
+    using Cliente::getNumeroCuenta;
+    using Cliente::getUsuario;
+    using Cliente::getContrasena;
+    ~ClienteSeguro_Private() {
+        cout << "MEMORIA LIBERADA" << endl;
+    }
+    string encriptarInformacion(const string& contrasena) {
+        string encriptada = contrasena;
+        const int desplazamiento = 5; // Desplazamiento fijo para la encriptación
+        for (char& c : encriptada) {
+            if (isalpha(c)) { // Solo se aplica encriptación a los caracteres alfabéticos
+                if (isupper(c)) {
+                    c = 'A' + (c - 'A' + desplazamiento) % 26; //Encriptar letra mayúscula
+                }
+                else {
+                    c = 'a' + (c - 'a' + desplazamiento) % 26; //Encriptar letra minúscula
+                }
+            }
+        }
+        return encriptada;
+    }
+    bool verificarAutenticidad() const { // Lógica de verificación de autenticidad aquí
+        return true; // Ejemplo: siempre retorna true
+    }
+};
+
+int main() {
+    string nom;
+    int dnni;
+    int numcuenta;
+    string user;
+    string contr;
+    char caracter = ' ';
+    cout << "Ingrese su nombre: ";
+    cin >> nom;
+    cout << "Ingrese su DNI: ";
+    cin >> dnni;
+    cout << "Ingrese su Numero de Cuenta: ";
+    cin >> numcuenta;
+    cout << "Ingrese su usuario: ";
+    cin >> user;
+    cout << "Ingrese su contrasena: ";
+    while (caracter != ENTER) {
+        caracter = _getch();
+        if (caracter != BACKSPACE) {
+            contr.push_back(caracter);
+            cout << "*";
+        }
+        else {
+            if (contr.length() > 0) {
+                cout << "\b \b";
+                contr = contr.substr(0, contr.length() - 1);
+            }
+        }
+    }
+    ClienteSeguro_Public cliente_Public(nom, dnni, numcuenta, user,contr);
+    ClienteSeguro_Protected cliente_Protected(nom, dnni, numcuenta, user,contr);
+    ClienteSeguro_Private cliente_Private(nom, dnni, numcuenta, user,contr);
+    cout << "\n";
+    cout << "\nDatos del cliente (Herencia Publica):\n";
+    cout << "Nombre:" << cliente_Public.getNombre() << endl;
+    cout << "DNI: " << cliente_Public.getDni() << endl;
+    cout << "Numero de cuenta: " << cliente_Public.getNumeroCuenta() << endl;
+    cout << "Usuario: " << cliente_Public.getUsuario() << endl;
+    cout << "Contrasena encriptada: " << cliente_Public.encriptarInformacion(contr) << endl;
+    cout << "\nDatos del cliente (Herencia Protegida):\n";
+    cout << "Nombre: " << cliente_Protected.getNombre() << endl;
+    cout << "DNI: " << cliente_Protected.getDni() << endl;
+    cout << "Numero de cuenta: " << cliente_Protected.getNumeroCuenta() << endl;
+    cout << "Usuario: " << cliente_Protected.getUsuario() << endl;
+    cout << "Contrasena encriptada: " << cliente_Protected.encriptarInformacion(contr) << endl;
+    cout << "\nDatos del cliente (Herencia Privada):\n";
+    cout << "Nombre: " << cliente_Private.getNombre() << endl;
+    cout << "DNI: " << cliente_Private.getDni() << endl;
+    cout << "Numero de cuenta: " << cliente_Private.getNumeroCuenta() << endl;
+    cout << "Usuario: " << cliente_Private.getUsuario() << endl;
+    cout << "Contrasena encriptada: " << cliente_Private.encriptarInformacion(contr) << endl;
+    cout << "\n";
+    return 0;
+}
